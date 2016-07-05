@@ -4,7 +4,7 @@ from flask import Flask, request, render_template
 from model.base import db_session
 
 from model.order import Order
-import wechat
+from wechat import wechat
 
 app = Flask(__name__)
 
@@ -25,11 +25,10 @@ def check_signature():
     signature = request['signature']
     timestamp = request['timestamp']
     nonce = request['nonce']
-    return wechat.check_signature(token, signature, timestamp, nonce)
+    return wechat.check_signature(signature, timestamp, nonce)
 
 
 @app.route('/make_a_order', methods=['POST', 'GET'])
-@wechat.oauth
 def make_a_order():
     """"
     version:0.0.1
@@ -42,11 +41,12 @@ def make_a_order():
         title = request.form['title']
         describe = request.form['describe']
         money = request.form['money']
+        address = request.form['address']
         location_x = request.form['location_x']
         location_y = request.form['location_y']
         progress = Order.Progeress_Enum.on
         # 简单的订单创建逻辑,没有考虑恶意刷单,用户验证情况
-        order = Order(title=title, describe=describe, money=money,
+        order = Order(title=title, describe=describe, money=money, address=address,
                       create_at=datetime.datetime.now(),
                       send_time=None, paid_at=None,
                       location_x=location_x, location_y=location_y, progress=progress)
