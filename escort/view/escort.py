@@ -1,6 +1,10 @@
 # coding: utf-8
 import datetime
+
+import sys
 from flask import Flask, request, render_template
+
+sys.path.append("..")
 from model.base import db_session
 
 from model.order import Order
@@ -19,13 +23,14 @@ def hello_world():
     return 'Hello escort!'
 
 
-@app.route('/check_signature')
+@app.route('/check_signature', methods=['GET'])
 def check_signature():
-    token = request['token']
-    signature = request['signature']
-    timestamp = request['timestamp']
-    nonce = request['nonce']
-    return wechat.check_signature(signature, timestamp, nonce)
+    signature = request.args.get('signature')
+    timestamp = request.args.get('timestamp')
+    nonce = request.args.get('nonce')
+    echostr = request.args.get('echostr')
+    if wechat.check_signature(signature, timestamp, nonce):
+        return echostr
 
 
 @app.route('/make_a_order', methods=['POST', 'GET'])
