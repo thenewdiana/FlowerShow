@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a44af1cc-49f4-4025-86e3-932b9a0b88c9" name="Default" comment="" />
+    <list default="true" id="a44af1cc-49f4-4025-86e3-932b9a0b88c9" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/escort/view/wechat.py" afterPath="$PROJECT_DIR$/escort/view/wechat.py" />
+    </list>
     <ignored path="FlowerShow.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -25,7 +27,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="escort.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="escort.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/escort/view/escort.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="580">
@@ -41,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wechat.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="wechat.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/escort/view/wechat.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="436">
-              <caret line="21" column="24" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+              <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
               <folding>
                 <element signature="e#16#32#0" expanded="true" />
               </folding>
@@ -702,16 +704,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/escort/view/wechat.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="21" column="24" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
-          <folding>
-            <element signature="e#16#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/escort/view/escort.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="580">
@@ -722,6 +714,16 @@
             <element signature="e#314#336#0" expanded="true" />
             <element signature="e#414#664#0" expanded="true" />
             <element signature="e#744#1711#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/escort/view/wechat.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+          <folding>
+            <element signature="e#16#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
