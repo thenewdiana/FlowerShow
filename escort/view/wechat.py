@@ -9,7 +9,7 @@ from wechat_sdk import WechatConf, WechatBasic
 from werkzeug.exceptions import abort
 
 sys.path.append("..")
-
+first = True
 token = "flowersandgrassmakesunine"
 app_id = "wx74f11559acca4843"
 app_secret = "049c8dfaabc0ba862d11d6b1bba8c264"
