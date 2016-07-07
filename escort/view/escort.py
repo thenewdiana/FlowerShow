@@ -24,21 +24,35 @@ def hello_world():
     return 'Hello escort!'
 
 
-@app.route('/create_menu')
+@app.route('/create_menu', methods=['GET'])
 def create_menu():
     menu = {
-        'button': [
+        "button": [
             {
-                'type': 'click',
-                'name': '跳转网页',
-                'key': 'jump_to_web',   
-                # 'url': url_for('hello_world')
-                'url': 'http://www.baidu.com'
-            }
+                "name": "选择服务",
+                "sub_button": [
+                    {
+                        "type": "view",
+                        "name": "校园镖局",
+                        "url": "http://seize.space"
+                    },
+                    {
+                        "type": "view",
+                        "name": "下载客户端",
+                        "url": "http://seize.space"
+                    },
+                ]
+            },
 
+
+            {
+                "name": "个人中心",
+                "type": "view",
+                "url": "http://seize.space"
+            }
         ]
     }
-    return wechat.create_menu(menu_data=menu)
+    return str(wechat.create_menu(menu_data=menu))
 
 
 def subscribe(key, ticket):
@@ -50,7 +64,7 @@ def scan(key, ticket):
 
 
 def click(key):
-    pass
+    return url_for('hello_world')
 
 
 def view(key):
@@ -61,7 +75,7 @@ def location(latitude, longtitude, prescision):
     pass
 
 
-@app.route('/wexin', methods=['GET'])
+@app.route('/wexin', methods=['GET', 'POST', 'OPTION'])
 def wexin():
     signature = request.args.get('signature')
     timestamp = request.args.get('timestamp')
