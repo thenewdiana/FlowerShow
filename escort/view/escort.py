@@ -1,18 +1,24 @@
 # coding: utf-8
 import datetime
-
 import sys
-from flask import Flask, request, render_template, redirect, url_for, make_response
-from wechat_sdk.exceptions import ParseError
 
 sys.path.append("..")
-from model.base import db_session
 
+from flask import Flask, request, render_template, redirect, url_for, make_response
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
+
+from wechat_sdk.exceptions import ParseError
+
+from model.base import db_session
 from model.order import Order
 from wechat import wechat
 
 app = Flask(__name__)
-
+admin = Admin(app)
+admin.add_view(ModelView(Order, db_session))
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 @app.before_request
 def pre():
@@ -43,7 +49,6 @@ def create_menu():
                     },
                 ]
             },
-
 
             {
                 "name": "个人中心",
