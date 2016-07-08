@@ -1,23 +1,37 @@
-# Flower_grass_Show
+# FlowerShow
 #项目依赖
-Flask
+### [Flask](http://flask.pocoo.org)
 
-Flask-HttpAuth
+### [Flask-HttpAuth](https://flask-httpauth.readthedocs.io/en/latest/)
 
-jinjia2
+### [Flask-Admin](https://flask-admin.readthedocs.io/en/latest/introduction/)
 
-SQLAlchemy
+### [Flask-Cache](http://www.pythondoc.com/flask-cache/#id4)
 
-Werkzeug
+### [wecaht-sdk](http://wechat-python-sdk.com)
 
-alembic
+### [jinjia2](http://docs.jinkan.org/docs/jinja2/templates.html)
 
-decorator
+​	不用手动安装
+
+### [Werkzeug](http://werkzeug.pocoo.org)
+
+​	不用手动安装
+
+### [SQLAlchemy](http://www.sqlalchemy.org)
+
+### [alembic](http://alembic.zzzcomputing.com/en/latest/)
+
+
 
 
 #安装依赖
 
-##on Mac
-brew install package_name
+##	on Mac
+##### 		```pip install package_name```
+
+
+
 #项目脑图
+
 http://naotu.baidu.com/file/da13089863fdf67d623d96f177945c6c?token=67f6b9956e6e4603
