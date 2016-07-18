@@ -108,15 +108,15 @@ def wexin():
     timestamp = request.args.get('timestamp')
     nonce = request.args.get('nonce')
     echostr = request.args.get('echostr')
-    if wechat.check_signature(wechat.token, signature, timestamp, nonce):
+    try:
+        wechat.check_signature(wechat.token, signature, timestamp, nonce)
         if echostr != '':
             return echostr
         else:
             # code goes here
             pass
-    else:
-        return 'you are not wechat,fuck off!'
-
+    except wechat.InvalidSignatureException:
+        return 'you are not wechat ,fuck off'
 
 @app.route('/make_a_order', methods=['POST', 'GET'])
 def make_a_order():
