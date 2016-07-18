@@ -108,7 +108,7 @@ def wexin():
     timestamp = request.args.get('timestamp')
     nonce = request.args.get('nonce')
     echostr = request.args.get('echostr')
-    if wechat.check_signature(signature, timestamp, nonce):
+    if wechat.check_signature(wechat.token, signature, timestamp, nonce):
         if echostr != '':
             return echostr
         else:
