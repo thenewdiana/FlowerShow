@@ -3,33 +3,34 @@ import datetime
 import sys
 
 sys.path.append("..")
-
-from flask import Flask, request, render_template, redirect, url_for, make_response
+from flask import Flask, request, render_template, redirect, url_for, make_response, jsonify
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from flask_admin.base import expose
-
 from flask_httpauth import HTTPBasicAuth
+
+from model.Position import Position
 from model.base import db_session
-from model.order import Order
+from model.Topic import Topic
+from model.order import Escort
 import wechat
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 admin = Admin(app)
-admin.add_view(ModelView(Order, db_session))
-
+admin.add_view(ModelView(Escort, db_session))
+admin.add_view(ModelView(Topic, db_session))
+admin.add_view(ModelView(Position, db_session))
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 
 users = {
-    'taylor': 'happytimeadmin',
+    'taylor': 'taylor',
 }
 
 
-@app.before_request
-def pre():
-    pass
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
 
 
 @auth.get_password
@@ -41,15 +42,29 @@ def get_password(username):
 
 @app.route('/admin')
 @auth.login_required
-@expose
 def admin_view():
-    return admin.endpoint
+    pass
 
 
 @app.route('/')
-@auth.login_required
 def hello_world():
     return 'Hello escort!'
+
+
+@app.route('/topic')
+def topic_list():
+    json = []
+    for title in db_session.query(Topic).all():
+        json.append(title.serializer())
+    return jsonify({"data": json})
+
+
+@app.route('/position')
+def position():
+    json = []
+    for posi in db_session.query(Position).all():
+        json.append(posi.serializer())
+    return jsonify({"data": json})
 
 
 @app.route('/create_menu', methods=['GET'])
@@ -62,7 +77,7 @@ def create_menu():
                     {
                         "type": "view",
                         "name": "校园镖局",
-                        "url": "http://seize.space"
+                        "url": "http://seize.space:8085/"
                     },
                     {
                         "type": "view",
@@ -118,29 +133,27 @@ def wexin():
     except wechat.InvalidSignatureException:
         return 'you are not wechat ,fuck off'
 
-@app.route('/make_a_order', methods=['POST', 'GET'])
+
+@app.route('/make_escort', methods=['POST', 'GET'])
 def make_a_order():
     """"
     version:0.0.1
-    创建一个订单,必须的字段
-    title,describe,money,location_x,location_y
+    创建一个镖单
     """
 
     if request.method == 'POST':
-        # 从请求表单中创建变量
-        title = request.form['title']
-        describe = request.form['describe']
-        money = request.form['money']
-        address = request.form['address']
-        location_x = request.form['location_x']
-        location_y = request.form['location_y']
-        progress = Order.Progeress_Enum.on
+        # 从请求json中创建变量
+        title = request.json['title']
+        describe = request.json['describe']
+        money = request.json['money']
+        address = request.json['address']
+        progress = Escort.Progeress_Enum.on
         # 简单的订单创建逻辑,没有考虑恶意刷单,用户验证情况
-        order = Order(title=title, describe=describe, money=money, address=address,
-                      create_at=datetime.datetime.now(),
-                      send_time=None, paid_at=None,
-                      location_x=location_x, location_y=location_y, progress=progress)
-        db_session.add(order)
+        # order = Order(title=title, describe=describe, money=money, address=address,
+        #               create_at=datetime.datetime.now(),
+        #               send_time=None, paid_at=None,
+        #               location_x=location_x, location_y=location_y, progress=progress)
+        # db_session.add(order)
         db_session.commit()
         return render_template('result_create_order.html')
     if request.method == 'GET':

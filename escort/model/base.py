@@ -4,12 +4,12 @@ from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine('sqlite:////tmp/escort.db', convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
+                                         autoflush=True,
                                          bind=engine))
 Base = declarative_base()
 Base.query = db_session.query_property()
 
 
 def init_db():
-    from model import order
+    from model import order, Topic, Position
     Base.metadata.create_all(bind=engine)

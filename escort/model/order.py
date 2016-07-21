@@ -6,8 +6,8 @@ from sqlalchemy.orm import relationship
 from model.base import Base
 
 
-class Order(Base):
-    __tablename__ = 'Order'
+class Escort(Base):
+    __tablename__ = 'Escort'
 
     class Progeress_Enum():
         on = 'on'
@@ -23,14 +23,9 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String(140))
-    describe = Column(String(800))
+    describe = Column(String(1000))
     address = Column(String(1000))
     money = Column(Float)
-    create_at = Column(DateTime)
-    send_at = Column(DateTime)
-    paid_at = Column(DateTime)
-    location_x = Column(Float)
-    location_y = Column(Float)
     progress = Column('progress',
                       Enum('on', 'attemper', 'run', 'abandon', 'deleted',
                            'paid', 'arrive', 'sign', 'complete', 'off'))
