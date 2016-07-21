@@ -14,7 +14,8 @@ class Topic(Base):
     title = Column(String(140))
     describe = Column(String(1000))
 
-    def __init__(self, title=None, describe=None):
+    def __init__(self, img=None, title=None, describe=None):
+        self.img=img
         self.title = title
         self.describe = describe
 

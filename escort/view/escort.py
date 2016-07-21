@@ -53,10 +53,8 @@ def hello_world():
 
 @app.route('/topic')
 def topic_list():
-    json = []
-    for title in db_session.query(Topic).all():
-        json.append(title.serializer())
-    return jsonify({"data": json})
+    items = db_session.query(Topic).all()
+    return render_template('topic_list.html', items=items)
 
 
 @app.route('/position')
