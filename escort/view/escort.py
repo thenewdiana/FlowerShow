@@ -2,30 +2,48 @@
 import datetime
 import sys
 
+from flask.ext.admin import AdminIndexView
+
+
 sys.path.append("..")
 from flask import Flask, request, render_template, redirect, url_for, make_response, jsonify
-from flask_admin import Admin
+from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_httpauth import HTTPBasicAuth
 
 from model.Position import Position
-from model.base import db_session
+from model.base import init_db,db_session
 from model.Topic import Topic
 from model.order import Escort
 import wechat
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
-admin = Admin(app)
-admin.add_view(ModelView(Escort, db_session))
-admin.add_view(ModelView(Topic, db_session))
-admin.add_view(ModelView(Position, db_session))
+
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 
 users = {
-    'taylor': 'taylor',
+    'taylor': '222',
 }
+
+
+class MyHomeView(AdminIndexView):
+    @expose('/')
+    @auth.login_required
+    def index(self):
+        return self.render('admin/index.html')
+
+
+admin = Admin(app, index_view=MyHomeView())
+admin.add_view(ModelView(Escort, db_session))
+admin.add_view(ModelView(Topic, db_session))
+admin.add_view(ModelView(Position, db_session))
+
+
+@app.before_first_request
+def init_database():
+    init_db()
 
 
 @app.teardown_appcontext
@@ -40,15 +58,10 @@ def get_password(username):
     return None
 
 
-@app.route('/admin')
-@auth.login_required
-def admin_view():
-    pass
-
-
 @app.route('/')
+@auth.login_required
 def hello_world():
-    return 'Hello escort!'
+    return 'hi'
 
 
 @app.route('/topic')
@@ -93,26 +106,6 @@ def create_menu():
         ]
     }
     # return str(wechat.create_menu(menu_data=menu))
-
-
-def subscribe(key, ticket):
-    pass
-
-
-def scan(key, ticket):
-    pass
-
-
-def click(key):
-    return url_for('hello_world')
-
-
-def view(key):
-    pass
-
-
-def location(latitude, longtitude, prescision):
-    pass
 
 
 @app.route('/wexin', methods=['GET', 'POST', 'OPTION'])

@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>微信</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.2.1.4.js"></script>
+    <script type="text/javascript" src="js/TouchSlide.1.1.js"></script>
+    <script type="text/javascript" src="js/global.js"></script>
+    <script type="text/javascript" src="js/.js"></script>
+</head>
+
+<body>
+
+<!-- 头部star -->
+<div class="m-header">
+    <div class="back">
+        <a href="#"><em  class="icon icon-header-back"></em></a>
+    </div>
+    <div class="close">
+        <a href="#"><em  class="icon icon-header-close"></em></a>
+    </div>
+    <h1>发镖</h1>
+</div>
+<!-- 头部end -->
+<!-- 发镖star -->
+<div class="m-send-dartlike mt10">
+    <div class="m-dartlike-item">
+        <div class="item cf">
+            <div class="left fl"><em class="icon icon-zhuti"></em><span>主题</span></div>
+            <div class="right fr bd-topic"><span>选择此趟镖单的主题</span></div>
+            <div class="arrow topic_choose"><em class="icon icon-item-right"></em></div>
+        </div>
+        <div class="item cf">
+            <div class="left fl"><em class="icon icon-send-time"></em><span>送达时间</span></div>
+            <div class="right fr">
+                <div class="nor bd-time"><span>16:00——17:00</span></div>
+                <div class="hor">
+                    <ul>
+                        <li>17:00——18:00</li>
+                        <li>18:00——19:00</li>
+                        <li>20:00——21:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="arrow"><em class="icon icon-adrr-down"></em></div>
+        </div>
+        <div class="item cf">
+            <div class="left fl"><em class="icon icon-send-addr"></em><span>位置</span></div>
+            <div class="right fr bd-location">
+                <p><span>杨</span><span>12333</span><i>哈雷</i></p>
+            </div>
+            <div class="arrow location_choose"><em class="icon icon-item-right"></em></div>
+        </div>
+    </div>
+    <div class="m-dartlike-content mt10">
+        <div class="hd"><em class="icon icon-send-note"></em><span>镖单内容</span></div>
+        <div class="bd mt10 bd-information">
+            <textarea placeholder="键入您的重要信息"></textarea>
+        </div>
+    </div>
+    <!-- 图片说明 -->
+    <div class="m-picture-description">
+        <div class="hd cf">
+            <div class="fl"><em class="icon icon-send-gally"></em><span>图片说明 </span></div>
+            <div class="fr">
+                <i>0/2</i>
+            </div>
+        </div>
+        <div class="bd mt10 bd-images">
+            <div class="img img-finish">
+                <img src="images/ip-img.jpg" alt="">
+                <em>100%</em>
+            </div>
+            <div class="img">
+                <img src="images/ip-img.jpg" alt="">
+                <em>0%</em>
+            </div>
+            <div class="up-img">
+                <em class="icon icon-up-img"></em>
+                <input type="file" name ="file">
+            </div>
+        </div>
+    </div>
+    <!-- 服务费 -->
+    <div class="m-dartlike-item">
+        <div class="item cf">
+            <div class="left fl"><em class="icon icon-send-rmb"></em><span> 服务费</span></div>
+            <div class="right fr bd-service-fee">
+                <input type="text" class="important-color" placeholder="请输入">
+                <span class="important-color">元</span>
+            </div>
+        </div>
+        <div class="item cf">
+            <div class="left fl"><em class="icon icon-send-dasang"></em><span>打赏</span></div>
+            <div class="right fr">
+                <div class="nor bd-tip"> <span class="important-color">2.00元</span></div>
+                <div class="hor">
+                    <ul>
+                        <li>3.00元</li>
+                        <li>4.00元</li>
+                        <li>5.00元</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="arrow"><em class="icon icon-adrr-down"></em></div>
+        </div>
+    </div>
+    <!-- 支付方式 -->
+    <div class="m-pay-way mt10">
+        <div class="hd">
+            <em class="icon icon-send-gally"></em><span>支付方式 </span>
+        </div>
+        <div class="bd bd-pay">
+            <div class="list">
+                <div class="item on">
+                    <div class="img">
+                        <img src="images/pay01.png" alt="">
+                    </div>
+                    <h3>货到付款</h3>
+                    <p>预约的订单不可货到付款</p>
+                    <div class="button">
+                        <em><i></i></em>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="img">
+                        <img src="images/pay02.png" alt="">
+                    </div>
+                    <h3>微信付款</h3>
+                    <p>预约的订单不可货到付款</p>
+                    <div class="button">
+                        <em><i></i></em>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="img">
+                        <img src="images/pay03.png" alt="">
+                    </div>
+                    <h3>支付宝付款</h3>
+                    <p>预约的订单不可货到付款</p>
+                    <div class="button">
+                        <em><i></i></em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 发镖end -->
+
+<div class="m-pay-submit">
+    <div class="left fl">支付：<i class="important-color">2.00元</i></div>
+    <div class="right fl"><input type="submit" id ="pay_submit"value="提交镖单"></div>
+</div>
+
+<!-- 弹窗start -->
+<div class="m-my-tips-alert-wrap m-alert-wrap m-fail-wrap" >
+    <div class="m-close-succeed-alert  m-close-fail-alert">
+        <img src="images/alert.png" alt="">
+        <h3>OOPS!</h3>
+        <p></p> 
+    </div>
+</div>
+<div class="m-my-tips-alert-wrap m-alert-wrap m-note-wrap" >
+    <div class="m-close-succeed-alert">
+        <img src="images/up-success.png" alt="">
+        <h3>恭喜您</h3>
+        <p></p> 
+    </div>
+</div>
+<!-- 弹窗end -->
+</body>
+
+</html>
