@@ -33,9 +33,8 @@ class Escort(Base):
     fee = Column(Float())
     tip = Column(Float())
     pay_index = Column(Integer())
-
-
     progress = Column('progress', Enum(Progress_Enum))
+
     def __init__(self, topic=None, time=None, name=None, phone=None,
                  information=None, address=None, fee=None, tip=None,
                  pay_index=None, progress=Progress_Enum.off):
