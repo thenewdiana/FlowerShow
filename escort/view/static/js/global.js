@@ -414,7 +414,7 @@ $(document).ready(function () {
             bdServiceFee = $('.m-dartlike-item .bd-service-fee input').val(); //服务费
             bdTip = $('.m-dartlike-item .bd-tip span').text(); //打赏
             bdPayIndex = $('.bd-pay .list .item').index($('.bd-pay .list .on'));//付款方式
-            url = '127.0.0.1:5000/send_bd';//提交url
+            url = '/send_bd';//提交url
             data = {
                 'topic': bdTopic,
                 'time': bdTime,
