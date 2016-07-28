@@ -59,18 +59,6 @@ def get_password(username):
     return None
 
 
-@app.route('/')
-@auth.login_required
-def hello_world():
-    return 'hi'
-
-
-@app.route('/topic')
-def topic_list():
-    items = db_session.query(Topic).all()
-    return render_template('topic_list.html', items=items)
-
-
 @app.route('/position')
 def position():
     json = []
@@ -126,7 +114,8 @@ def wexin():
         return 'you are not wechat ,fuck off'
 
 
-@app.route('/send_bd', methods=['POST', 'GET'])
+#####   TODO web goes here
+@app.route('/send_bd.html', methods=['POST', 'GET'])
 def send_bd():
     """"
     version:0.0.1
@@ -145,12 +134,6 @@ def send_bd():
         tip = data['tip']
         pay_index = data['pay_index']
         progress = Escort.Progress_Enum.on
-        print isinstance(fee, tuple)
-        print fee
-        print isinstance(tip, tuple)
-        print tip
-        print isinstance(pay_index, tuple)
-        print pay_index
         # FIXME 未做任何判断直接生成escort
         escort = Escort(topic=topic, name=name,
                         phone=phone, address=address,
@@ -159,15 +142,196 @@ def send_bd():
                         tip=tip, pay_index=pay_index, progress=progress)
         db_session.add(escort)
         db_session.commit()
-        return jsonify({'data': 'ok'})
+        return jsonify({'rest': 'ok'})
     if request.method == 'GET':
         return render_template('send_bd.html')
 
 
-@app.route('/my_bd', methods=['GET', 'POST'])
+@app.route('/article.html')
+def article():
+    if request.method == 'GET':
+        return render_template('article.html')
+
+
+@app.route('/bd_appeal.html')
+def bd_appeal():
+    if request.method == 'GET':
+        return render_template('bd_appeal.html')
+
+
+@app.route('/be_bs.html')
+def be_bs():
+    if request.method == 'GET':
+        return render_template('be_bs.html')
+
+
+@app.route('/be_bs_success.html')
+def be_bs_success():
+    if request.method == 'GET':
+        return render_template('be_bs_success.html')
+
+
+@app.route('/bs_bd.html')
+def bs_bd():
+    if request.method == 'GET':
+        return render_template('bs_bd.html')
+
+
+@app.route('/bs_bd_detail.html')
+def bs_bd_detail():
+    if request.method == 'GET':
+        return render_template('bs_bd_detail.html')
+
+
+@app.route('/bs_center.html')
+def bs_center():
+    if request.method == 'GET':
+        return render_template('bs_center.html')
+
+
+@app.route('/bs_complaint.html')
+def bs_complaint():
+    if request.method == 'GET':
+        return render_template('bs_complaint.html')
+
+
+@app.route('/bs_income.html')
+def bs_income():
+    if request.method == 'GET':
+        return render_template('bs_income.html')
+
+
+@app.route('/forget.html')
+def forget():
+    if request.method == 'GET':
+        return render_template('forget.html')
+
+
+@app.route('/get_bd.html')
+def get_bd():
+    if request.method == 'GET':
+        return render_template('get_bd.html')
+
+
+@app.route('/go_complaint.html')
+def go_complaint():
+    if request.method == 'GET':
+        return render_template('go_complaint.html')
+
+
+@app.route('/go_refund.html')
+def go_refund():
+    if request.method == 'GET':
+        return render_template('go_refund.html')
+
+
+@app.route('/')
+@app.route('/index.html')
+def index():
+    if request.method == 'GET':
+        return render_template('index.html')
+
+
+@app.route('/login.html')
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+
+
+@app.route('/my.html')
+def my():
+    if request.method == 'GET':
+        return render_template('my.html')
+
+
+@app.route('/my_bd.html')
 def my_bd():
-    if request.method == "GET":
+    if request.method == 'GET':
         return render_template('my_bd.html')
+
+
+@app.route('/my_bd_complaint.html')
+def my_bd_complaint():
+    if request.method == 'GET':
+        return render_template('my_bd_complaint.html')
+
+
+@app.route('/my_info.html')
+def my_info():
+    if request.method == 'GET':
+        return render_template('my_info.html')
+
+
+@app.route('/my_location.html')
+def my_location():
+    if request.method == 'GET':
+        return render_template('my_location.html')
+
+
+@app.route('/my_location_edit.html')
+def my_location_edit():
+    if request.method == 'GET':
+        return render_template('my_location_edit.html')
+
+
+@app.route('/my_location_new.html')
+def my_location_new():
+    if request.method == 'GET':
+        return render_template('my_location_new.html')
+
+
+@app.route('/my_msg.html')
+def my_msg():
+    if request.method == 'GET':
+        return render_template('my_msg.html')
+
+
+@app.route('/refund_confirm.html')
+def refund_confirm():
+    if request.method == 'GET':
+        return render_template('refund_confirm.html')
+
+
+@app.route('/register.html')
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+
+
+@app.route('/safe.html')
+def safe():
+    if request.method == 'GET':
+        return render_template('safe.html')
+
+
+@app.route('/safe_change.html')
+def safe_change():
+    if request.method == 'GET':
+        return render_template('safe_change.html')
+
+
+@app.route('/send_bd_1.html')
+def send_bd_1():
+    if request.method == 'GET':
+        return render_template('send_bd_1.html')
+
+
+@app.route('/send_bd_iframe.html')
+def send_bd_iframe():
+    if request.method == 'GET':
+        return render_template('send_bd_iframe.html')
+
+
+@app.route('/settings.html')
+def settings():
+    if request.method == 'GET':
+        return render_template('settings.html')
+
+
+@app.route('/topic_list.html')
+def topic_list():
+    if request.method == 'GET':
+        return render_template('topic_list.html')
 
 
 if __name__ == '__main__':

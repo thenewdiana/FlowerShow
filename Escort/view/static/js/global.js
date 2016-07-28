@@ -452,6 +452,7 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 success: function (data) {
                     data = JSON.parse(data).data;
+                    alert(data)
                     if (data == 'ok')
                         window.location.href = 'my_bd';//跳转我的镖单页面
                 },
