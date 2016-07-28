@@ -1,9 +1,9 @@
 # coding: utf-8
 import datetime
+import json
 import sys
 
 from flask.ext.admin import AdminIndexView
-
 
 sys.path.append("..")
 from flask import Flask, request, render_template, redirect, url_for, make_response, jsonify
@@ -12,9 +12,9 @@ from flask_admin.contrib.sqla import ModelView
 from flask_httpauth import HTTPBasicAuth
 
 from model.Position import Position
-from model.base import init_db,db_session
+from model.base import init_db, db_session
 from model.Topic import Topic
-from model.order import Escort
+from model.Escort import Escort
 import wechat
 
 app = Flask(__name__)
@@ -125,31 +125,47 @@ def wexin():
         return 'you are not wechat ,fuck off'
 
 
-@app.route('/make_escort', methods=['POST', 'GET'])
-def make_a_order():
+@app.route('/send_bd', methods=['POST', 'GET'])
+def send_bd():
     """"
     version:0.0.1
     创建一个镖单
     """
-
     if request.method == 'POST':
         # 从请求json中创建变量
-        title = request.json['title']
-        describe = request.json['describe']
-        money = request.json['money']
-        address = request.json['address']
-        progress = Escort.Progeress_Enum.on
-        # 简单的订单创建逻辑,没有考虑恶意刷单,用户验证情况
-        # order = Order(title=title, describe=describe, money=money, address=address,
-        #               create_at=datetime.datetime.now(),
-        #               send_time=None, paid_at=None,
-        #               location_x=location_x, location_y=location_y, progress=progress)
-        # db_session.add(order)
+        data = request.get_json()
+        topic = data['topic']
+        time = data['time']
+        name = data['name']
+        phone = data['phone']
+        address = data['address']
+        information = data['information']
+        fee = data['fee']
+        tip = data['tip']
+        pay_index = data['pay_index']
+        progress = Escort.Progress_Enum.on
+        print isinstance(fee, tuple)
+        print fee
+        print isinstance(tip, tuple)
+        print tip
+        print isinstance(pay_index, tuple)
+        print pay_index
+        # FIXME 未做任何判断直接生成escort
+        escort = Escort(topic=topic, name=name,
+                        phone=phone, address=address,
+                        time=time,
+                        information=information, fee=fee,
+                        tip=tip, pay_index=pay_index, progress=progress)
+        db_session.add(escort)
         db_session.commit()
-        return render_template('result_create_order.html')
+        return redirect(url_for('my_bd'))
     if request.method == 'GET':
-        return render_template('create_order.html')
+        return render_template('send_bd.html')
 
 
+@app.route('/my_bd', methods=['GET', 'POST'])
+def my_bd():
+    if request.method == "GET":
+        return render_template('my_bd.html')
 if __name__ == '__main__':
     app.run(debug=True)

@@ -12,5 +12,5 @@ Base.query = db_session.query_property()
 
 
 def init_db():
-    from model import order, Topic, Position
+    from model import Escort, Topic, Position
     Base.metadata.create_all(bind=engine)

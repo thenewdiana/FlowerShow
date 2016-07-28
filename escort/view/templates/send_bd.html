@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>微信</title>
-    <link rel="stylesheet" type="text/css" href="static/css/common.css">
-    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/common.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script type="text/javascript" src="static/js/jquery.cookie.2.1.4.js"></script>
-    <script type="text/javascript" src="static/js/TouchSlide.1.1.js"></script>
-    <script type="text/javascript" src="static/js/global.js"></script>
-    <script type="text/javascript" src="static/js/.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.cookie.2.1.4.js"></script>
+    <script type="text/javascript" src="../static/js/TouchSlide.1.1.js"></script>
+    <script type="text/javascript" src="../static/js/global.js"></script>
+    <script type="text/javascript" src="js/.js"></script>
 </head>
 
 <body>
@@ -73,11 +73,11 @@
         </div>
         <div class="bd mt10 bd-images">
             <div class="img img-finish">
-                <img src="static/images/ip-img.jpg" alt="">
+                <img src="../static/images/ip-img.jpg" alt="">
                 <em>100%</em>
             </div>
             <div class="img">
-                <img src="static/images/ip-img.jpg" alt="">
+                <img src="../static/images/ip-img.jpg" alt="">
                 <em>0%</em>
             </div>
             <div class="up-img">
@@ -119,7 +119,7 @@
             <div class="list">
                 <div class="item on">
                     <div class="img">
-                        <img src="static/images/pay01.png" alt="">
+                        <img src="../static/images/pay01.png" alt="">
                     </div>
                     <h3>货到付款</h3>
                     <p>预约的订单不可货到付款</p>
@@ -129,7 +129,7 @@
                 </div>
                 <div class="item">
                     <div class="img">
-                        <img src="static/images/pay02.png" alt="">
+                        <img src="../static/images/pay02.png" alt="">
                     </div>
                     <h3>微信付款</h3>
                     <p>预约的订单不可货到付款</p>
@@ -139,7 +139,7 @@
                 </div>
                 <div class="item">
                     <div class="img">
-                        <img src="static/images/pay03.png" alt="">
+                        <img src="../static/images/pay03.png" alt="">
                     </div>
                     <h3>支付宝付款</h3>
                     <p>预约的订单不可货到付款</p>
@@ -153,11 +153,27 @@
 </div>
 <!-- 发镖end -->
 
-
 <div class="m-pay-submit">
     <div class="left fl">支付：<i class="important-color">2.00元</i></div>
     <div class="right fl"><input type="submit" id ="pay_submit"value="提交镖单"></div>
 </div>
+
+<!-- 弹窗start -->
+<div class="m-my-tips-alert-wrap m-alert-wrap m-fail-wrap" >
+    <div class="m-close-succeed-alert  m-close-fail-alert">
+        <img src="../static/images/alert.png" alt="">
+        <h3>OOPS!</h3>
+        <p></p> 
+    </div>
+</div>
+<div class="m-my-tips-alert-wrap m-alert-wrap m-note-wrap" >
+    <div class="m-close-succeed-alert">
+        <img src="../static/images/up-success.png" alt="">
+        <h3>恭喜您</h3>
+        <p></p> 
+    </div>
+</div>
+<!-- 弹窗end -->
 </body>
 
 </html>

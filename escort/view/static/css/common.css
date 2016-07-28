@@ -343,6 +343,10 @@ body {
   margin-left: -1.6rem;
   margin-top: -139.5px;
   margin-top: -1.395rem; }
+.m-close-fail-alert{
+  height: 252px;
+  height: 2.52rem;
+}
   .m-close-succeed-alert img {
     display: block;
     width: 132px;
@@ -417,3 +421,20 @@ body {
       line-height: 0.7rem; }
       .m-select-hor .hor li:hover {
         background-color: #ededed; }
+.m-admin-wrap .m-admin-bottom{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  background: #f1f1f1;
+  text-align: center;
+}
+  .m-admin-wrap .m-admin-bottom a{
+    color: #444444;
+    font-size: 28.999px;
+    font-size: 0.29rem;
+    font-weight: 400;
+    margin-left: 10px;
+    vertical-align: middle;}
