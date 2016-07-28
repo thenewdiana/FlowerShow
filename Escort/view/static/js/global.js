@@ -445,7 +445,7 @@ $(document).ready(function () {
             data = JSON.stringify(data); //预计数据接口  POST数据             
             $.ajax({
                 type: 'post',
-                url: '/send_bd',
+                url: '/send_bd.html',
                 dataType: 'json',
                 data: data,
                 async: true,
@@ -454,7 +454,7 @@ $(document).ready(function () {
                     data = JSON.parse(data).data;
                     alert(data)
                     if (data == 'ok')
-                        window.location.href = 'my_bd';//跳转我的镖单页面
+                        window.location.href = '/my_bd.html';//跳转我的镖单页面
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert(XMLHttpRequest.status);
