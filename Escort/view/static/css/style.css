@@ -101,10 +101,10 @@ textarea {
 @media (-webkit-min-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (min-resolution: 192dpi) {
   .icon {
     background-image: url("../images/sprite@2x.png");
-    -webkit-background-size: 56px 1069px;
-       -moz-background-size: 56px 1069px;
-         -o-background-size: 56px 1069px;
-            background-size: 56px 1069px; } }
+    -webkit-background-size: 56px 1130px;
+       -moz-background-size: 56px 1130px;
+         -o-background-size: 56px 1130px;
+            background-size: 56px 1130px; } }
 
 .icon-logon-eye {
   background-position: -0px -0px;
@@ -1648,7 +1648,8 @@ textarea {
     padding: 10px; }
     .m-send-dartlike .m-dartlike-content .bd textarea:focus {
       color: #444444; }
-
+#upload-img{
+}
 .m-picture-description {
   margin-bottom: 10px;
   background: #f8f8f8;

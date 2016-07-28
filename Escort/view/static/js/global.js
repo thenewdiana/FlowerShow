@@ -101,9 +101,9 @@ $(document).ready(function () {
 
 
     //修改下列注释掉的点击函数，获取选中数据
-    $('.m-dartlike-item .hor').click(function () {
-        $(this).slideUp();
-    });
+    //$('.m-dartlike-item .hor').click(function() {
+    //$(this).slideUp();
+    //});
     //发镖页面
     $('.m-dartlike-item .hor ul li').click(function () {
         var text = $(this).text();
@@ -276,6 +276,13 @@ $(document).ready(function () {
     });
 })
 
+$(document).ready(function () {
+    $('.close a').click(function () {
+        window.location.href = 'index.html';
+    });
+})
+
+
 var blankReg = /(^\s*)|(\s*$)/g;//空格正则
 var data = '';
 var url;
@@ -351,6 +358,16 @@ $(document).ready(function () {
         $('.m-dartlike-item .bd-location p i').text($.cookie('c_loaddress'));
     }
 
+    //textarea输入后文字更深格式
+    var bdInformationInput = $('.m-dartlike-content .bd-information textarea');
+    bdInformationInput.blur(function () {
+        $('.m-dartlike-content .bd-information textarea').css({
+            'opacity': '0.6',
+            'filter': 'alpha(opacity=60)',
+            'color': '#000'
+        });
+    })
+
     //服务费输入结束时计算结算金额
     $('.bd-service-fee input').blur(function () {
         var feeVal = $(this).val();
@@ -368,24 +385,24 @@ $(document).ready(function () {
 
     })
 
-    //打赏选择后计算结算金额
+    //获取选择时间值
     $('.m-dartlike-item .hor ul li').click(function () {
         var text = $(this).text();
         $(this).parent().parent().siblings('.nor').children('span').text(text);
         $(this).parent().parent().slideUp();
-        var feeVal = parseInt($('.bd-service-fee input').val()).toFixed(2);
-        var tipVal = parseInt($(this).text()).toFixed(2);
-        var resultVal = ((feeVal - 0) + (tipVal - 0)).toFixed() + '元';
-        $('.m-pay-submit .left i').text(resultVal);
+    })
+
+    $('.m-picture-description .bd .up-img input').click(function (event) {
+
     })
 
     //计算支付结果函数
     getResult = function () {
-        var feeVal = parseInt($('.bd-service-fee input').val()).toFixed(2);
+        var feeVal = parseFloat($('.bd-service-fee input').val()).toFixed(2);
         if (isNaN(feeVal)) {
             feeVal = 0;
         }
-        var tipVal = parseInt($('.bd-tip span').text()).toFixed(2);
+        var tipVal = parseFloat($('.bd-tip span').text()).toFixed(2);
         var resultVal = ((feeVal - 0) + (tipVal - 0)).toFixed() + '元';
 
         $('.m-pay-submit .left i').text(resultVal);
@@ -410,11 +427,10 @@ $(document).ready(function () {
             bdLocationPhone = $('.m-dartlike-item .bd-location p span:eq(1)').text();//位置联系人电话
             bdLocationAddress = $('.m-dartlike-item .bd-location p i').text();//位置具体地址
             bdInformation = $('.m-dartlike-content .bd-information textarea').val();//镖单内容
-            image1 = $('.m-picture-description .bd-images .img:eq(0) img').attr('src');//上传图片1
+            //image1 = $('.m-picture-description .bd-images .img:eq(0) img').attr('src');//上传图片1
             bdServiceFee = $('.m-dartlike-item .bd-service-fee input').val(); //服务费
-            bdTip = $('.m-dartlike-item .bd-tip span').text(); //打赏
+            bdTip = parseFloat($('.bd-tip span').text()); //打赏修改数据类型
             bdPayIndex = $('.bd-pay .list .item').index($('.bd-pay .list .on'));//付款方式
-            url = '/send_bd';//提交url
             data = {
                 'topic': bdTopic,
                 'time': bdTime,
@@ -422,24 +438,28 @@ $(document).ready(function () {
                 'phone': bdLocationPhone,
                 'address': bdLocationAddress,
                 'information': bdInformation,
-                'fee': parseFloat(bdServiceFee),
-                'tip': parseFloat(bdTip),
-                'pay_index': parseInt(bdPayIndex)
+                'fee': bdServiceFee,
+                'tip': bdTip,
+                'pay_index': bdPayIndex
             };
-            data = JSON.stringify(data); //预计数据接口  POST数据
+            data = JSON.stringify(data); //预计数据接口  POST数据             
             $.ajax({
                 type: 'post',
-                url: url,
+                url: '/send_bd',
                 dataType: 'json',
                 data: data,
-                async: false,
+                async: true,
+                contentType: 'application/json',
                 success: function (data) {
-                    var data = JSON.parse(data);
-                    if (data) {
-                    }
+                    data = JSON.parse(data).data;
+                    if (data == 'ok')
+                        window.location.href = 'my_bd';//跳转我的镖单页面
                 },
-                error: function () {
-                    alert('opps!' +data)
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                    alert(data);
                 }
             })
         }
@@ -482,27 +502,25 @@ $(document).ready(function () {
                 i = defaultItem.index();
                 data = {'default_index': i};
                 JSON.stringify(data);
-                /*$.ajax({                                            //预计数据接口
-                 async:false,
-                 type:'post',
-                 url:url,
-                 dataType:'json',
-                 data:data,
-                 success:function(data){                           //返回数据成功后执行函数
-                 var data =JSON.parse(data);
-                 if(data){
-                 myFunc.showNote('修改成功');
-                 //返回数据，给默认地址 item 添加 id
-                 }
-                 },
-                 error:function(){
-                 alert(''+)
-                 }
-                 })*/
-                myFunc.showNote('设置成功');
+                $.ajax({
+                    type: 'post',
+                    url: '',
+                    dataType: 'json',
+                    data: data,
+                    async: true,
+                    contentType: 'application/json',
+                    success: function () {
+                        myFunc.showNote('设置成功');
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+                        alert(XMLHttpRequest.readyState);
+                        alert(textStatus);
+                    }
+                })
             } else {
                 //如果默认地址存在，用户取消点击默认地址选择框，未选择任何地址就提交时，提醒用户选择默认地址
-                //myFunc.showAlert('请选择默认地址');
+                myFunc.showAlert('请选择默认地址');
                 return false;
 
             }
@@ -534,33 +552,29 @@ $(document).ready(function () {
             delItem = del.parent().parent().parent();
             i = delItem.index();
             data = $('.m-my-location .item').eq(i);
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             myFunc.showNote('删除成功');
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    myFunc.showNote('删除成功');
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
             delItem.fadeTo('slow', 0.01, function () {
                 $(this).slideUp('slow'), function () {
                     $(this).remove();
                 }
             });
-            myFunc.showNote('删除成功');
-
         })
-
     });
-
 })
 
 ////
@@ -597,27 +611,24 @@ $(document).ready(function () {
                 , 'l_phone': lPhone, 'l_checkbox_status': lCheckboxStatus
             };
             data = JSON.stringify(data);
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             myFunc.showNote('修改成功');
-             setTimeout("window.location.href='my_location.html';",3000);
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/                               //预计数据接口 POST数据
-            myFunc.showNote('修改成功');
-            setTimeout("window.location.href='my_location.html';", 3000);
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    myFunc.showNote('修改成功');
+                    setTimeout("window.location.href='my_location.html';", 3000);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         }
-
     })
 })
 
@@ -652,25 +663,23 @@ $(document).ready(function () {
                 'n_ncheckboxstatus': nCheckboxStatus
             }; //提交位置数据 POST数据
             data = JSON.stringify(data);                                        //预计数据接口
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             window.location.href ='my_location.html';
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            myFunc.showNote('新建成功');
-            setTimeout("window.location.href='my_location.html';", 3000);//跳转页面
-
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    myFunc.showNote('新建成功');
+                    setTimeout("window.location.href='my_location.html';", 3000);//跳转页面
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         }
     })
 
@@ -695,35 +704,34 @@ $(document).ready(function () {
 
     //申诉页面
     $('#onAppeal .submit a').click(function () {                    //点击完成按钮
-        var appealProof = $('.m-escort-appeal .proof');
+        //var appealProof = $('.m-escort-appeal .proof');上传图片凭证
         var appealMsg = $('.m-escort-appeal .appealmsg textarea').val();
         if (appealMsg.replace(blankReg, '') === '') {                                        //判断申诉说明是否为空，如果是提示输入。
             myFunc.showAlert('请填写申诉说明');
         } else {
             //申诉凭证数据                                 //预计数据接口
-            data = {'appeal_proof': appealProof, 'appeal_msg': appealMsg};
+            data = {'appeal_msg': appealMsg};
             JSON.stringify(data);                       //POST 数据
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             var begin ='begin';                                   //定义begin参数
-             begin = encodeURI(encodeURI(begin));                  //对begin参数进行两次编码
-             window.location.href ='bs_bd.html?beginVal='+begin+'';//将begin参数传入跳转页面，实现显示指定位置效果
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            var begin = 'begin';                                   //定义begin参数
-            begin = encodeURI(encodeURI(begin));                  //对begin参数进行两次编码
-            window.location.href = 'bs_bd.html?beginVal=' + begin + '';//将begin参数传入跳转页面，实现显示指定位置效果
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    if (data) {
+                        var begin = 'begin';                                   //定义begin参数
+                        begin = encodeURI(encodeURI(begin));                  //对begin参数进行两次编码
+                        window.location.href = 'bs_bd.html?beginVal=' + begin + '';//将begin参数传入跳转页面，实现显示指定位置效果
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         }
     })
 
@@ -732,25 +740,6 @@ $(document).ready(function () {
     beginSignal = decodeURI(decodeURI(beginSignal));
     if (beginSignal && beginSignal.indexOf('begin') != -1) {        //判断begin参数值是否存在如果存在继续
         var text = '用户已投诉';
-        //data = {'appeal_status':text};
-        //JSON.stringify(data); //预计数据接口 POST数据
-        /*$.ajax({                                            //预计数据接口
-         async:false,
-         type:'post',
-         url:url,
-         dataType:'json',
-         data:data,
-         success:function(data){                           //返回数据成功后执行函数
-         var data =JSON.parse(data);
-         if(data){
-         $('.m-bs-bd .hd ul li:eq(2)').trigger('click');
-         $('.m-my-dartlike-shut .appeal h3 span').text(text);
-         }
-         },
-         error:function(){
-         alert(''+)
-         }
-         })*/
         $('.m-bs-bd .hd ul li:eq(2)').trigger('click');
         $('.m-my-dartlike-shut .appeal h3 span').text(text);
     }
@@ -764,16 +753,16 @@ $(document).ready(function () {
     var totalValue;
     var myIncome = 0;
     var myRefund = 0;
-    $('#myIncome ul li').each(function () {
+    $('#myIncome ul li').each(function () {//遍历收入，取得总额
         myIncome += parseFloat($(this).find('em').text()) * 1;
 
     })
-    $('#myRefund ul li').each(function () {
+    $('#myRefund ul li').each(function () {//遍历支出，取得总额
         myRefund += parseFloat($(this).find('em').text()) * 1;
 
     })
-    totalValue = (myIncome + myRefund).toFixed(2);
-    $('.m-my-capital .money h2 span').text(totalValue);
+    totalValue = (myIncome + myRefund).toFixed(2);//收入与支出相加
+    $('.m-my-capital .money h2 span').text(totalValue);//把计算后金额赋值到显示区域
 })
 
 
@@ -799,23 +788,22 @@ $(document).ready(function () {
             confirmId = current.parent().parent().siblings('.list').find('ul li:eq(0) span b').text();
             data = {"confirm_id": confirmId};
             JSON.stringify(data);
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             $('.m-my-receipt-alert-wrap').hide();     //隐藏提示框遮罩
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            $('.m-my-receipt-alert-wrap').hide();
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    $('.m-my-receipt-alert-wrap').hide();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         });
     });
 
@@ -836,30 +824,27 @@ $(document).ready(function () {
             shutId = current.parent().parent().siblings('.list').find('ul li:eq(0) span b').text();
             data = {"shut_id": shutId};
             JSON.stringify(data);
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             $('.m-my-receipt-alert-wrap').hide();     //隐藏提示框遮罩
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            $('.m-my-shut-alert-wrap').hide();
-            shutItem = current.parent().parent().parent();
-            shutItem.slideUp('slow', function () {
-                $(this).remove();
-            }); //关闭的订单信息传到服务器后在已关闭中出现
-
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    $('.m-my-shut-alert-wrap').hide();
+                    shutItem = current.parent().parent().parent();
+                    shutItem.slideUp('slow', function () {
+                        $(this).remove();
+                    }); //关闭的订单信息传到服务器后在已关闭中出现
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         })
-
     });
 
     //删除镖单
@@ -880,30 +865,28 @@ $(document).ready(function () {
             delId = current.parent().parent().siblings('.list').find('ul li:eq(0) span b').text();
             data = {'del_id': delId};
             JSON.stringify(data);
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             $('.m-my-receipt-alert-wrap').hide();     //隐藏提示框遮罩
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            $('.m-my-del-alert-wrap').hide();
-            delItem = current.parent().parent().parent();
-            delItem.slideUp('slow', function () {
-                $(this).remove();
-            });
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    $('.m-my-del-alert-wrap').hide();
+                    delItem = current.parent().parent().parent();
+                    delItem.slideUp('slow', function () {
+                        $(this).remove();
+                    });
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         })
     });
-
 })
 
 ////
@@ -916,26 +899,24 @@ $(document).ready(function () {
         var complaintReason = $(this).parent().parent().siblings('.m-user-complaint').find('.item a textarea').val();
         data = {'complaint_reason': complaintReason};
         JSON.stringify(data);
-        /*$.ajax({                                            //预计数据接口
-         async:false,
-         type:'post',
-         url:url,
-         dataType:'json',
-         data:data,
-         success:function(data){                           //返回数据成功后执行函数
-         var data =JSON.parse(data);
-         if(data){
-         myFunc.showNote('登录成功');
-         setTimeout("window.location.href='my_bd.html';",3000);
-         }
-         },
-         error:function(){
-         myFunc.showAlert('提交失败，请重试');
-         }
-         })*/
         if (complaintReason.replace(blankReg, '') !== '') {
-            myFunc.showNote('请等候工作人员处理');
-            setTimeout("window.location.href='my_bd.html';", 3000);
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    myFunc.showNote('请等候工作人员处理');
+                    setTimeout("window.location.href='my_bd.html';", 3000);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         } else {
             myFunc.showAlert('请输入投诉原因');
         }
@@ -948,24 +929,22 @@ $(document).ready(function () {
         data = {'refund_reason': refundReason, 'refund_value': refundValue};
         JSON.stringify(data);
         if (refundReason.replace(blankReg, '') !== '') {
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             myFunc.showNote('登录成功');
-             setTimeout("window.location.href='my_bd.html';",3000);
-             }
-             },
-             error:function(){
-             myFunc.showAlert('提交失败，请重试');
-             }
-             })*/
-            window.location.href = 'refund_confirm.html';
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    window.location.href = 'refund_confirm.html';
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         } else {
             myFunc.showAlert('请输入退款原因');
         }
@@ -1002,28 +981,25 @@ $(document).ready(function () {
     validGet.click(function () {        //判断手机是否输入成功，成功后点击方可获取验证码
         if (ok1) {
             var sendPhone = bsPhoneInput.val();
-            //data ={'send_phone':sendPhone};
-            //JSON.stringify(data);
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             validCodeInput.removeAttr('disabled');取消禁用验证码输入框
-             myFunc.showNote('验证码已发送到您的手机');//预计数据接口 判断是否发送成功
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            validInput.removeAttr('disabled');//取消禁用验证码输入框
-            myFunc.showNote('验证码已发送到您的手机');//返回函数 提醒发送成功
-
+            data = {'send_phone': sendPhone};
+            JSON.stringify(data);
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    validInput.removeAttr('disabled');//取消禁用验证码输入框
+                    myFunc.showNote('验证码已发送到您的手机');//返回函数 提醒发送成功
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         }
     });
 
@@ -1056,22 +1032,22 @@ $(document).ready(function () {
                 //bsImg2 = $('.m-picture-description .bd .img:eq(1) img').src();
                 //data ={'bs_school':bsSchool,'bs_location':bsLocation,'bs_name':bsName,'bs_sex':bsSex,'bs_valid':bsValid,'bs_img1':bsImg1,'bs_img2':bsImg2};
                 //JSON.stringify(data);
-                /*$.ajax({                               //预计数据接口
-                 async:false,
+                /*$.ajax({
                  type:'post',
-                 url:url,
+                 url:'',
                  dataType:'json',
                  data:data,
-                 success:function(data){                   //返回数据成功后执行函数
-                 var data =JSON.parse(data);
-                 if(data){
+                 async:true,
+                 contentType:'application/json',
+                 success:function(){
                  window.location.href ='be_bs_success.html';
-                 }
                  },
-                 error:function(){
-                 alert(''+)
+                 error:function(XMLHttpRequest, textStatus, errorThrown){
+                 alert(XMLHttpRequest.status);
+                 alert(XMLHttpRequest.readyState);
+                 alert(textStatus);
                  }
-                 })*/
+                 }) */
                 window.location.href = 'be_bs_success.html';
             } else {
                 myFunc.showAlert('请验证您的手机号');
@@ -1137,25 +1113,23 @@ $(document).ready(function () {
             loginReady = true;
             data = {'login_ready': loginReady};
             JSON.stringify(data);
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             myFunc.showNote('登录成功');
-             setTimeout("window.location.href='index.html';",3000);
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            myFunc.showNote('登录成功');
-            setTimeout("window.location.href='index.html';", 3000);
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    myFunc.showNote('登录成功');
+                    setTimeout("window.location.href='index.html';", 3000);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         } else {
             return false;
         }
@@ -1191,25 +1165,23 @@ $(document).ready(function () {
         if (ok1) {
             data = {'send_signal': ok1};
             JSON.parse(data);
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             validCodeInput.removeAttr('disabled');
-             myFunc.showNote('验证码已发送到您的手机');//预计数据接口 判断是否发送成功
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            validCodeInput.removeAttr('disabled');
-            myFunc.showNote('验证码已发送到您的手机');//预计数据接口 判断是否发送成功
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    validCodeInput.removeAttr('disabled');
+                    myFunc.showNote('验证码已发送到您的手机');//预计数据接口 判断是否发送成功
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         }
     });
 
@@ -1248,25 +1220,23 @@ $(document).ready(function () {
                 registerCode = registerCodeInput.val();
             data = {'register_id': registerId, 'register_code': registerCode};
             JSON.stringify(data); //预计数据接口 POST数据
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             myFunc.showNote('注册成功');
-             setTimeout("window.location.href='index.html';",3000); //启动3秒定时
-             }
-             },
-             error:function(){
-             myFunc.showNote('注册失败，请重试。');
-             }
-             })*/
-            myFunc.showNote('注册成功');
-            setTimeout("window.location.href='index.html';", 3000); //启动3秒定时
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    myFunc.showNote('注册成功');
+                    setTimeout("window.location.href='index.html';", 3000); //启动3秒定时
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         } else {
             return false;
         }
@@ -1302,25 +1272,23 @@ $(document).ready(function () {
         if (ok1) {
             data = {'send_signal': ok1};
             JSON.parse(data);
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             validCodeInput.removeAttr('disabled');
-             myFunc.showNote('验证码已发送到您的手机');//预计数据接口 判断是否发送成功
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            validCodeInput.removeAttr('disabled');
-            myFunc.showNote('验证码已发送到您的手机');//预计数据接口 判断是否发送成功
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    validCodeInput.removeAttr('disabled');
+                    myFunc.showNote('验证码已发送到您的手机');//预计数据接口 判断是否发送成功
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         }
     });
 
@@ -1359,25 +1327,24 @@ $(document).ready(function () {
                 forgetCode = forgetCodeInput.val();
             data = {'forget_id': forgetId, 'forget_code': forgetCode};
             JSON.stringify(data); //预计数据接口 POST数据
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             myFunc.showNote('登录成功');
-             setTimeout("window.location.href='index.html';",3000); //启动3秒定时
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            myFunc.showNote('登录成功');
-            setTimeout("window.location.href='index.html';", 3000); //启动3秒定时
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    myFunc.showNote('登录成功');
+                    setTimeout("window.location.href='index.html';", 3000); //启动3秒定时
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
+
         } else {
             return false;
         }
@@ -1435,25 +1402,23 @@ $(document).ready(function () {
             newCode = newSecond.val();
             data = {'new_code': newCode};
             JSON.stringify(data);//预计数据接口 POST数据
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             myFunc.showNote('修改密码成功');
-             setTimeout("window.location.href='safe.html';",3000); //启动3秒定时
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            myFunc.showNote('修改密码成功');
-            setTimeout("window.location.href='safe.html';", 3000); //启动3秒定时
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    myFunc.showNote('修改密码成功');
+                    setTimeout("window.location.href='safe.html';", 3000); //启动3秒定时
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         } else {
             return false;
         }
@@ -1475,24 +1440,22 @@ $(document).ready(function () {
             number = number - 1;
             data = {'zan_less': number};
             JSON.stringify(data);
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             numberFrom.text(data);                  //点赞人数减一个
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            numberFrom.text(number);//点赞人数减一个
-
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    numberFrom.text(number);//点赞人数减一个
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         } else {                                                        //点赞
             $(this).removeClass('icon-unzan').addClass('icon-zan');
             var numberFrom = $(this).parent().siblings('p').children('i')
@@ -1501,24 +1464,23 @@ $(document).ready(function () {
             number = number + 1;
             data = {'zan_add': number};
             JSON.stringify(data);
-            /*$.ajax({                                            //预计数据接口
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             numberFrom.text(data);                  //点赞人数加一个
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            numberFrom.text(number);//点赞人数加一个
-
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    numberFrom.text(number);
+                    numberFrom.text(number);//点赞人数加一个
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         }
     })
 })
@@ -1557,23 +1519,22 @@ $(document).ready(function () {
             $.cookie('c_infourl', infoImg, {expires: 5 * 365, path: '/'});
             data = {'info_img': infoImg};                           //预计数据接口 POST数据
             JSON.stringify(data);
-            /*$.ajax({
-             async:false,
-             type:'post',
-             url:url,
-             dataType:'json',
-             data:data,
-             success:function(data){                           //返回数据成功后执行函数
-             var data =JSON.parse(data);
-             if(data){
-             window.location.href = 'my.html';         //跳转页面
-             }
-             },
-             error:function(){
-             alert(''+)
-             }
-             })*/
-            window.location.href = 'my.html';
+            $.ajax({
+                type: 'post',
+                url: '',
+                dataType: 'json',
+                data: data,
+                async: true,
+                contentType: 'application/json',
+                success: function () {
+                    window.location.href = 'my.html';
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            })
         } else {                                                    //如果不符合条件，提示，并不能提交
             $('.m-person-info .infoName input').attr('placeholder', '请输入');
             return false;

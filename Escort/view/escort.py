@@ -159,20 +159,16 @@ def send_bd():
                         tip=tip, pay_index=pay_index, progress=progress)
         db_session.add(escort)
         db_session.commit()
-        return redirect(url_for('my_bd'))
+        return jsonify({'data': 'ok'})
     if request.method == 'GET':
         return render_template('send_bd.html')
-    if request.method == 'OPTIONS':
-        headers = {"Access-Control-Allow-Origin": "*",
-                   "Access-Control-Allow-Headers":
-                       "Origin, X-Requested-With, Content-Type, Accept, X-ID, X-TOKEN, X-ANY-YOUR-CUSTOM-HEADER",
-                   "Access-Control-Allow-Methods": "POST, PUT, GET, OPTIONS, DELETE"}
-        return Response('SUCCESS', mimetype='application/json', headers=headers)
 
 
 @app.route('/my_bd', methods=['GET', 'POST'])
 def my_bd():
     if request.method == "GET":
         return render_template('my_bd.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
