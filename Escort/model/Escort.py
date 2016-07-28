@@ -11,7 +11,7 @@ from model.base import Base
 class Escort(Base):
     __tablename__ = 'Escort'
 
-    class Progress_Enum(enum.Enum):
+    class Progress_Enum():
         on = 'on'
         coordinating = 'coordinating'
         run = 'run'
