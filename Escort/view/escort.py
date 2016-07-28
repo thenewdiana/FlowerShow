@@ -4,6 +4,7 @@ import json
 import sys
 
 from flask.ext.admin import AdminIndexView
+from requests import Response
 
 sys.path.append("..")
 from flask import Flask, request, render_template, redirect, url_for, make_response, jsonify
@@ -161,6 +162,12 @@ def send_bd():
         return redirect(url_for('my_bd'))
     if request.method == 'GET':
         return render_template('send_bd.html')
+    if request.method == 'OPTIONS':
+        headers = {"Access-Control-Allow-Origin": "*",
+                   "Access-Control-Allow-Headers":
+                       "Origin, X-Requested-With, Content-Type, Accept, X-ID, X-TOKEN, X-ANY-YOUR-CUSTOM-HEADER",
+                   "Access-Control-Allow-Methods": "POST, PUT, GET, OPTIONS, DELETE"}
+        return Response('SUCCESS', mimetype='application/json', headers=headers)
 
 
 @app.route('/my_bd', methods=['GET', 'POST'])
